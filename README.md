@@ -4,11 +4,7 @@ This repository provides an open-source engineering blueprint, custom target fil
 
 Unlike commercial flight controllers that limit you to pre-configured layouts, utilizing a standard industrial developer board breaks open full control of the silicon. This project serves as a definitive architectural guide to overcoming severe bare-metal implementation bugs, remapping timers for advanced multi-rotor and actuator configurations, and running ultra-low latency PID loops on a highly affordable H7 platform.
 
-Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this.
-
-## Repository Structure
-
-The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
+Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
 ```
 ├── Hardware/                      # Physical schematic and layout assets
