@@ -1,0 +1,3 @@
+NOTE
+
+You can merge this files with a standard betaflight source files, since you have to build from config, make sure to update the source files form github to avoid compilation issues
