@@ -1,4 +1,4 @@
-# STM32H743 DevBoard Flight Controller (Betaflight Target)
+# STM32H743 Flight Controller (Betaflight Target)
 
 This repository provides an open-source engineering blueprint, custom target files, and a 4-layer hardware carrier board design to run standard Betaflight firmware on a generic **DevEBox STM32H743VIT6 development board**. 
 
