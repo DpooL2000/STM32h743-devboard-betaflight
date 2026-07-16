@@ -8,10 +8,6 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 <img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="350" alt="STM32H743VIT6 Dev Board" />
 
-## System Layout & Renderings
-
-<img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="350" alt="Carrier Board Layout" />
-
 ## Hardware Architecture Manifest
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
@@ -38,6 +34,10 @@ The target configuration files provided here are explicitly tailored and tested 
   * **Serial Peripherals:** `UART1` (`PA9` TX, `PA10` RX) dedicated to Serial RX; `UART3` (`PD8` TX, `PD9` RX) assigned to ESC Telemetry; `UART6` (`PC6` / `PC7`) and `UART7` (`PE8` / `PE7`) exposed for general telemetry/VTX expansion.
   * **Peripherals:** Beeper output assigned to `PC2` (inverted configuration).
 * **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
+
+## System Layout & Renderings
+
+<img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="350" alt="Carrier Board Layout" />
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
