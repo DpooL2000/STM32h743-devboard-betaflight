@@ -33,7 +33,6 @@ The target configuration files provided here are explicitly tailored and tested 
   * **Servos (1–4):** `PE5` (Servo 1), `PE6` (Servo 2), `PE1` (Servo 3, timer remapped), `PA15` (Servo 4, timer remapped).
   * **Serial Peripherals:** `UART1` (`PA9` TX, `PA10` RX) dedicated to Serial RX; `UART3` (`PD8` TX, `PD9` RX) assigned to ESC Telemetry; `UART6` (`PC6` / `PC7`) and `UART7` (`PE8` / `PE7`) exposed for general telemetry/VTX expansion.
   * **Peripherals:** Beeper output assigned to `PC2` (inverted configuration).
-* **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
 
 ## System Layout & Renderings
 
