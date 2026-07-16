@@ -159,7 +159,10 @@ You must manually patch the following core Betaflight files to implement the bar
 ### 3. Compilation & Flashing
 Once the source files are patched and your target directory is established, open your terminal in the Betaflight root directory and execute the standard make command:
 
-`make TARGET=DEVBOARD`
+```bash
+make clean
+make DEVBOARD -j$(nproc)
+```
 
 Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode.
 
