@@ -10,30 +10,30 @@ Detail guide on how the changes have been made is documented below, you can merg
 
 The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
-```text
-├── Hardware/
+```
+├── Hardware/                      # Physical schematic and layout assets
 │   ├── KiCad_Source/              # Raw .kicad_sch and .kicad_pcb project files
-│   └── Renderings/                # Hardware images, schematics, and design reference
-│       ├── Screenshot 2026-07-16 223007.jpg
-│       ├── Screenshot 2026-07-16 223036.jpg
-│       └── Screenshot 2026-07-16 223053.jpg
-
-├── src/                           # Target-specific core firmware file overlays
-│   ├── config/
-|   |   ├── DEVBOARD/
-│   |   |   └── config.h                   # Consolidated master hardware pin definitions
-│   ├── main/
-│   │   ├── drivers/
-│   │   │   └── accgyro/
-│   │   │       └── accgyro_spi_bmi160.c
-│   │   └── sensors/
-│   │       └── gyro_init.c
-│   └── platform/
-│       └── STM32/
-│           └── startup/
-│               └── system_stm32h7xx.c
-├── .gitignore                     # Custom toolchain build artifact filter
-└── LICENSE                        # Open-source MIT distribution license
+│   └── Renderings                 # Board images, schematics, and design references
+|
+├── STM32h743-devboard-betaflight/ # Target firmware deployment root
+│   ├── src/                       # Localized Betaflight source tree overlays
+│   │   ├── config/
+│   │   │   └── configs/
+│   │   │       └── DEVBOARD/
+│   │   │           └── config.h   # Master firmware target pin mapping definitions
+│   │   ├── main/
+│   │   │   ├── drivers/
+│   │   │   │   └── accgyro/
+│   │   │   │       └── accgyro_spi_bmi160.c
+│   │   │   └── sensors/
+│   │   │       └── gyro_init.c
+│   │   └── platform/
+│   │       └── STM32/
+│   │           └── startup/
+│   │               └── system_stm32h7xx.c
+│   ├── .gitignore                 # Active build artifact tracking filters
+│   ├── LICENSE                    # Open-source distribution permissions (MIT)
+│   └── README.md                  # Project documentation deployment guide
 ```
 
 ---
