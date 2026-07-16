@@ -38,7 +38,7 @@ The target configuration files provided here are explicitly tailored and tested 
 ## System Layout & Renderings
 
 <p align="center">
-<img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="350" alt="Carrier Board Layout" />
+<img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="550" alt="Carrier Board Layout" />
 </p>
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
