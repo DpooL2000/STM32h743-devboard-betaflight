@@ -31,9 +31,6 @@ The project layout separates the custom hardware implementation from the localiz
 │   │       └── STM32/
 │   │           └── startup/
 │   │               └── system_stm32h7xx.c
-│   ├── .gitignore                 # Active build artifact tracking filters
-│   ├── LICENSE                    # Open-source distribution permissions (MIT)
-│   └── README.md                  # Project documentation deployment guide
 ```
 
 ---
