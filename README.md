@@ -7,7 +7,7 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 ## Hardware Architecture Manifest
 
 <p align="center">
-<img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="350" alt="STM32H743VIT6 Dev Board" />
+<img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="450" alt="STM32H743VIT6 Dev Board" />
 </p>
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
