@@ -6,8 +6,6 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 ![Carrier Board Layout](Hardware/renderings/Screenshot%202026-07-16%20230226.jpg)
 
----
-
 ## Hardware Architecture Manifest
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
@@ -35,8 +33,6 @@ The target configuration files provided here are explicitly tailored and tested 
   * **Peripherals:** Beeper output assigned to `PC2` (inverted configuration).
 * **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
 
----
-
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
 ```
@@ -62,11 +58,11 @@ Detail guide on how the changes have been made is documented below, you can merg
 │   │               └── system_stm32h7xx.c
 ```
 
+---
+
 # Bare-Metal Hardware Troubleshooting
 
 Bringing Betaflight up on standard industrial development boards reveals discrepancies between consumer flight controllers and raw silicon layouts. Below is the technical documentation of the three critical bare-metal failures encountered during hardware debugging, along with their permanent firmware solutions.
-
----
 
 ### Bug 3.1: 25MHz HSE Crystal & PLL1 Clock Configuration Failures
 
@@ -107,8 +103,6 @@ PLL3N = 48, // 5MHz * 48 = 240MHz VCO3
 PLL3Q = 5   // 240MHz VCO3 / 5 = 48MHz USB output clock
 ```
 
----
-
 ### Bug 3.3: Default BMI160 I2C Interface Boot Lockout
 
 **The Bug:**
@@ -127,6 +121,7 @@ IOWrite(csPin, false); // Falling edge tells the sensor to look for SPI frames
 delay(10); 
 IOWrite(csPin, true);  // Interface locked into SPI mode
 ```
+---
 
 # Firmware Source Tree Modification & Compilation Guide
 
@@ -158,6 +153,8 @@ Once the source files are patched and your target directory is established, open
 `make TARGET=DEVBOARD`
 
 Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode.
+
+---
 
 # Power Distribution & Critical Sensor Calibration
 
