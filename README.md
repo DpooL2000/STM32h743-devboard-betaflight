@@ -6,6 +6,34 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this.
 
+## Repository Structure
+
+The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
+
+```text
+├── Hardware/
+│   ├── KiCad_Source/              # Raw .kicad_sch and .kicad_pcb project files
+│   └── Renderings/                # Hardware images, schematics, and design reference
+│       ├── Screenshot 2026-07-16 223007.jpg
+│       ├── Screenshot 2026-07-16 223036.jpg
+│       └── Screenshot 2026-07-16 223053.jpg
+├── DEVBOARD/
+│   └── config.h                   # Consolidated master hardware pin definitions
+├── src/                           # Target-specific core firmware file overlays
+│   ├── main/
+│   │   ├── drivers/
+│   │   │   └── accgyro/
+│   │   │       └── accgyro_spi_bmi160.c
+│   │   └── sensors/
+│   │       └── gyro_init.c
+│   └── platform/
+│       └── STM32/
+│           └── startup/
+│               └── system_stm32h7xx.c
+├── .gitignore                     # Custom toolchain build artifact filter
+└── LICENSE                        # Open-source MIT distribution license
+```
+
 ---
 
 ## Hardware Architecture Manifest
