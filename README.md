@@ -19,7 +19,7 @@ The target configuration files provided here are explicitly tailored and tested 
 
 ---
 
-# 3. Bare-Metal Hardware Troubleshooting
+# Bare-Metal Hardware Troubleshooting
 
 Bringing Betaflight up on standard industrial development boards reveals discrepancies between consumer flight controllers and raw silicon layouts. Below is the technical documentation of the three critical bare-metal failures encountered during hardware debugging, along with their permanent firmware solutions.
 
@@ -85,7 +85,7 @@ delay(10);
 IOWrite(csPin, true);  // Interface locked into SPI mode
 ```
 
-## 4. Firmware Source Tree Modification & Compilation Guide
+# Firmware Source Tree Modification & Compilation Guide
 
 To replicate this build and compile the custom DevEBox target, follow these exact modifications within the Betaflight source tree.
 
@@ -116,7 +116,7 @@ Once the source files are patched and your target directory is established, open
 
 Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode.
 
-## Power Distribution & Critical Sensor Calibration
+# Power Distribution & Critical Sensor Calibration
 
 ### 1. Power Supply Topology
 This target configuration assumes the system is powered by an external step-down switching regulator delivering a stable 5V rail to the developer board. The onboard AMS1117-3.3 LDO regulator drops this input to 3.3V for the STM32H7 core and sensor buses, providing robust immunity against heavy Li-ion voltage sag down to a structural threshold of 4.4V.
