@@ -36,7 +36,7 @@ The target configuration files provided here are explicitly tailored and tested 
 
 ## System Layout & Renderings
 
-Yup, now you know it, **you can solder through hole Devboard to the SMD pads of this breakout board** giving you clear explansion over configured pins, Eight through hole pads have been left on the breakout board that you can align the DEvboard on top of breakout board. and similarly solder the BMI160, BMP280 GY board on the breakout board make the work much easy, Though i havent route the circuit for each sensor on the breakout board itself, you can easyily do it if you want, or you can just go with GY boards!!!. 
+Yup, now you know it, **you can solder through hole Devboard to the SMD pads of this breakout board** giving you clear explansion over configured pins, Eight through hole pads have been left on the breakout board that you can align the Devboard on top of breakout board. and similarly solder the BMI160, BMP280 GY board on the breakout board make the work much easy, Though i havent route the circuit for each sensor on the breakout board itself, you can easyily do it if you want, or you can just go with GY boards!!!. 
 
 <p align="center">
 <img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="550" alt="Carrier Board Layout" />
