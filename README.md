@@ -8,13 +8,29 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 ## Hardware Architecture Manifest
 
-The target configuration files provided here are explicitly tailored and tested against the following component topology:
+The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
 
 * **Microcontroller Core:** STM32H743VIT6 (ARM Cortex-M7 running at a stable 200MHz bus clock).
-* **Primary IMU (SPI1):** BMI160 Gyro/Accelerometer module routed to native SPI1 pins (`PA4`, `PA5`, `PA6`, `PA7`) with dedicated `PC4` EXTI hardware interrupt line synchronization.
-* **Secondary IMU (SPI2):** BMI160 Gyro/Accelerometer module mapped onto isolated native SPI2 pins (`PB12`, `PB13`, `PB14`, `PB15`) to isolate high-speed burst sensor reads over dedicated DMA streams.
-* **Barometer (I2C1):** BMP280 module routed to `PB8` (SCL) and `PB9` (SDA), configured via hardware jumpers on the breakout module to default $I^2C$ Address `0x76`.
-* **Blackbox Telemetry:** High-speed onboard SDIO MicroSD card slot (`PC8`, `PC9`, `PC10`, `PC11`, `PC12`, `PD2`) combined with an onboard QSPI external flash memory layer (`W25Q64JV` on `PB2`, `PB6`, `PD11`, `PD12`, `PD13`, `PE2`).
+* **Primary IMU (SPI1):** BMI160 Gyro/Accelerometer module routed to native SPI1 pins:
+  * `PA4` (Chip Select / CS)
+  * `PA5` (SCK), `PA6` (MISO / SDI), `PA7` (MOSI / SDO)
+  * Dedicated `PC4` EXTI hardware interrupt line synchronization.
+* **Secondary IMU (SPI2):** BMI160 Gyro/Accelerometer module mapped onto isolated native SPI2 pins:
+  * `PB12` (Chip Select / CS)
+  * `PB13` (SCK), `PB14` (MISO / SDI), `PB15` (MOSI / SDO)
+  * Dedicated `PD10` EXTI hardware interrupt line synchronization.
+* **Barometer (I2C1):** BMP280 module routed to `PB8` (SCL) and `PB9` (SDA), configured via hardware jumpers on the breakout module to default I2C Address `0x76`.
+* **Blackbox Telemetry:** High-speed onboard SDIO MicroSD card slot combined with an onboard QSPI external flash memory layer (`W25Q64JV`):
+  * **SDIO (SDMMC1):** `PC12` (CK), `PD2` (CMD), `PC8` (D0), `PC9` (D1), `PC10` (D2), `PC11` (D3). Card detection is handled via software polling (`SDCD_PIN` set to `NONE`).
+  * **QSPI:** `PB2` (CLK), `PB6` (CS), `PD11` (IO0), `PD12` (IO1), `PE2` (IO2), `PD13` (IO3).
+* **Power Supply Module Integration (GM V1.0):** Integrated hardware telemetry lines from the buck-regulated external power module routed directly to the microcontroller's high-precision 16-bit ADC peripheral interface:
+  * **Voltage Sensing (V_SENS):** Routed to analog input pin `PC1` (`ADC_VBAT_PIN`).
+  * **Current Sensing (I_SENS):** Routed to analog input pin `PC0` (`ADC_CURR_PIN`).
+* **Actuator Layout & Communications Matrix:**
+  * **Motors (1–8):** `PA0` (Motor 1), `PA1` (Motor 2), `PA2` (Motor 3), `PA3` (Motor 4), `PB0` (Motor 5, timer remapped), `PB1` (Motor 6, timer remapped), `PD5` (Motor 7), `PD6` (Motor 8).
+  * **Servos (1–4):** `PE5` (Servo 1), `PE6` (Servo 2), `PE1` (Servo 3, timer remapped), `PA15` (Servo 4, timer remapped).
+  * **Serial Peripherals:** `UART1` (`PA9` TX, `PA10` RX) dedicated to Serial RX; `UART3` (`PD8` TX, `PD9` RX) assigned to ESC Telemetry; `UART6` (`PC6` / `PC7`) and `UART7` (`PE8` / `PE7`) exposed for general telemetry/VTX expansion.
+  * **Peripherals:** Beeper output assigned to `PC2` (inverted configuration).
 * **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
 
 ---
