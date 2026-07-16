@@ -6,7 +6,9 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 ## Hardware Overview
 
+<p align="center">
 <img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="350" alt="STM32H743VIT6 Dev Board" />
+</p>
 
 ## Hardware Architecture Manifest
 
@@ -37,7 +39,9 @@ The target configuration files provided here are explicitly tailored and tested 
 
 ## System Layout & Renderings
 
+<p align="center">
 <img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="350" alt="Carrier Board Layout" />
+</p>
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
