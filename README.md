@@ -19,25 +19,6 @@ The target configuration files provided here are explicitly tailored and tested 
 
 ---
 
-## Critical System Calibration & Power Architecture
-
-### 1. Power Supply Topology
-This target configuration assumes the system is powered by an external step-down switching regulator (such as a generic or FPV-grade power distribution module) delivering a stable, low-ripple rail to the primary 5V pins of the developer board. The onboard linear LDO regulator (AMS1117-3.3) drops this input down to 3.3V for the STM32H7 core and sensor busses, providing robust immunity against heavy LiPo/Li-ion voltage sag down to a structural threshold of 4.4V.
-
-### 2. Telemetry & ADC Scaling (User Calibration Required)
-To achieve real-time battery status monitoring inside your Betaflight OSD, the analog Voltage and Current sensing lines from your power module must be routed to the microcontroller's high-precision 16-bit ADC pins:
-* **Voltage Telemetry (V_SENS):** Routed to pin `PC1`.
-* **Current Telemetry (I_SENS):** Routed to pin `PC0`.
-
-#### ⚠️ Mandatory Calibration Protocol:
-Do not rely blindly on stock software scale parameters. Every power module utilizes different internal resistor divider networks, and component manufacturing tolerances fluctuate. 
-
-As a structural baseline, this target defaults to a reference scale mapping:
-```text
-set vbat_scale = 108
-set current_meter_scale = 120
-```
-
 # 3. Bare-Metal Hardware Troubleshooting
 
 Bringing Betaflight up on standard industrial development boards reveals discrepancies between consumer flight controllers and raw silicon layouts. Below is the technical documentation of the three critical bare-metal failures encountered during hardware debugging, along with their permanent firmware solutions.
@@ -154,7 +135,7 @@ set current_meter_scale = 120
 save
 ```
 
-Before your first test flight, you must manually calibrate your hardware:
+⚠️ Before your first test flight, you must manually calibrate your hardware:
 
 1. Connect your fully assembled battery pack to the drone and measure the raw voltage at the main XT60 bus using a calibrated bench digital multimeter.
 2. Boot into the Betaflight Configurator GUI and check the reported voltage reading on the main Setup dashboard.
