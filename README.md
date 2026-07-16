@@ -36,6 +36,7 @@ As a structural baseline, this target defaults to a reference scale mapping:
 ```text
 set vbat_scale = 108
 set current_meter_scale = 120
+```
 
 # Section 2: The Debugging Chronicles (Bare-Metal Troubleshooting)
 
