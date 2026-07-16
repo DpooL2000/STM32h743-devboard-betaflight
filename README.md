@@ -6,8 +6,6 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 ![Carrier Board Layout](Hardware/renderings/Screenshot%202026-07-16%20230226.jpg)
 
-Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
-
 ---
 
 ## Hardware Architecture Manifest
@@ -38,6 +36,8 @@ The target configuration files provided here are explicitly tailored and tested 
 * **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
 
 ---
+
+Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
 ```
 ├── Hardware/                      # Physical schematic and layout assets
