@@ -8,29 +8,6 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
-```
-├── Hardware/                      # Physical schematic and layout assets
-│   ├── KiCad_Source/              # Raw .kicad_sch and .kicad_pcb project files
-│   └── Renderings                 # Board images, schematics, and design references
-|
-├── STM32h743-devboard-betaflight/ # Target firmware deployment root
-│   ├── src/                       # Localized Betaflight source tree overlays
-│   │   ├── config/
-│   │   │   └── configs/
-│   │   │       └── DEVBOARD/
-│   │   │           └── config.h   # Master firmware target pin mapping definitions
-│   │   ├── main/
-│   │   │   ├── drivers/
-│   │   │   │   └── accgyro/
-│   │   │   │       └── accgyro_spi_bmi160.c
-│   │   │   └── sensors/
-│   │   │       └── gyro_init.c
-│   │   └── platform/
-│   │       └── STM32/
-│   │           └── startup/
-│   │               └── system_stm32h7xx.c
-```
-
 ---
 
 ## Hardware Architecture Manifest
@@ -61,6 +38,29 @@ The target configuration files provided here are explicitly tailored and tested 
 * **PCB Stackup:** 4-Layer layout featuring two dedicated, uninterrupted internal Ground Planes (`In1.Cu` and `In2.Cu`) positioned exactly 0.1mm below the surface signal layers to establish immediate return path loops and maximize EMI shielding against heavy motor bus noise.
 
 ---
+
+```
+├── Hardware/                      # Physical schematic and layout assets
+│   ├── KiCad_Source/              # Raw .kicad_sch and .kicad_pcb project files
+│   └── Renderings                 # Board images, schematics, and design references
+|
+├── STM32h743-devboard-betaflight/ # Target firmware deployment root
+│   ├── src/                       # Localized Betaflight source tree overlays
+│   │   ├── config/
+│   │   │   └── configs/
+│   │   │       └── DEVBOARD/
+│   │   │           └── config.h   # Master firmware target pin mapping definitions
+│   │   ├── main/
+│   │   │   ├── drivers/
+│   │   │   │   └── accgyro/
+│   │   │   │       └── accgyro_spi_bmi160.c
+│   │   │   └── sensors/
+│   │   │       └── gyro_init.c
+│   │   └── platform/
+│   │       └── STM32/
+│   │           └── startup/
+│   │               └── system_stm32h7xx.c
+```
 
 # Bare-Metal Hardware Troubleshooting
 
