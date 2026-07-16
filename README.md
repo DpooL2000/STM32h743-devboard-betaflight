@@ -17,9 +17,11 @@ The project layout separates the custom hardware implementation from the localiz
 │       ├── Screenshot 2026-07-16 223007.jpg
 │       ├── Screenshot 2026-07-16 223036.jpg
 │       └── Screenshot 2026-07-16 223053.jpg
-├── DEVBOARD/
-│   └── config.h                   # Consolidated master hardware pin definitions
+
 ├── src/                           # Target-specific core firmware file overlays
+│   ├── config/
+|   |   ├── DEVBOARD/
+│   |   |   └── config.h                   # Consolidated master hardware pin definitions
 │   ├── main/
 │   │   ├── drivers/
 │   │   │   └── accgyro/
