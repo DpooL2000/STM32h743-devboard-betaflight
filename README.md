@@ -4,8 +4,10 @@ This repository provides an open-source engineering blueprint, custom target fil
 
 Unlike commercial flight controllers that limit you to pre-configured layouts, utilizing a standard industrial developer board breaks open full control of the silicon. This project serves as a definitive architectural guide to overcoming severe bare-metal implementation bugs, remapping timers for advanced multi-rotor and actuator configurations, and running ultra-low latency PID loops on a highly affordable H7 platform.
 
-![STM32H743VIT6 Dev Board](https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg)
-![Carrier Board Layout](Hardware/renderings/Screenshot%202026-07-16%20230226.jpg)
+<p align="center">
+  <img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="45%" alt="STM32H743VIT6 Dev Board" />
+  <img src="Hardware/renderings/Screenshot%202026-07-16%20230226.jpg" width="45%" alt="Carrier Board Layout" />
+</p>
 
 ## Hardware Architecture Manifest
 
