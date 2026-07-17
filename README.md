@@ -164,7 +164,7 @@ make clean
 make DEVBOARD -j$(nproc)
 ```
 
-Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode.
+Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode. For DFU mode you need to connecte BT0 to 3.3V ( you can find this pins near SWT pins).
 
 ---
 
