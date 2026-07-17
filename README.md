@@ -137,7 +137,7 @@ IOWrite(csPin, true);  // Interface locked into SPI mode
 To replicate this build and compile the custom DevEBox target, follow these exact modifications within the Betaflight source tree.
 
 ### 1. Target Directory Setup
-Create a new directory named `DEVBOARD` inside `src/main/target/`. 
+Create a new directory named `DEVBOARD` inside `src/main/config/configs/`. 
 Place your custom `config.h` files into this new folder.
 
 ### 2. Core Source Modifications
