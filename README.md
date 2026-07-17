@@ -138,7 +138,7 @@ To replicate this build and compile the custom DevEBox target, follow these exac
 
 ### 1. Target Directory Setup
 Create a new directory named `DEVBOARD` inside `src/main/target/`. 
-Place your custom `target.h`, `target.c`, and `config.h` files into this new folder.
+Place your custom `config.h` files into this new folder.
 
 ### 2. Core Source Modifications
 You must manually patch the following core Betaflight files to implement the bare-metal hardware fixes detailed in Section 2:
