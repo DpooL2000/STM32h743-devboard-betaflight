@@ -12,7 +12,7 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
 
-* **Microcontroller Core:** STM32H743VIT6 (ARM Cortex-M7 running at a stable 200MHz bus clock).
+* **Microcontroller Core:** STM32H743VIT6 (ARM Cortex-M7 running at a 480MHz bus clock).
 * **Primary IMU (SPI1):** BMI160 Gyro/Accelerometer module routed to native SPI1 pins:
   * `PA4` (Chip Select / CS)
   * `PA5` (SCK), `PA6` (MISO / SDI), `PA7` (MOSI / SDO)
