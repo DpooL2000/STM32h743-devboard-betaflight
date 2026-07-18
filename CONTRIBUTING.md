@@ -1,1 +1,1 @@
-Fell free to comtribute by oull requests.
+Feel free to comtribute by oull requests.
