@@ -82,12 +82,17 @@ Standard Betaflight STM32H7 codebases are optimized for 8MHz or 24MHz external c
 The internal clock structures (`pll1ConfigRevY` and `pll1ConfigRevV`) inside `src/platform/STM32/startup/system_stm32h7xx.c` must be rewritten to scale the 25MHz crystal safely:
 
 ```c
-// Adjusted clock parameters for a stable 200MHz SYSCLK
-.clockMhz = 200,
-.m = 25,     // 25MHz HSE / 25 = 1MHz reference
-.n = 400,    // 1MHz * 400 = 400MHz VCO frequency
-.p = 2,      // 400MHz VCO / 2 = 200MHz SYSCLK
-.vos = PWR_REGULATOR_VOLTAGE_SCALE1
+// Adjusted clock parameters for a stable 480MHz SYSCLK
+pllConfig_t pll1ConfigRevV = {
+    .clockMhz = 480,
+    .m = 5,
+    .n = 192,
+    .p = 2,
+    .q = 8,
+    .r = 5,
+    .vos = PWR_REGULATOR_VOLTAGE_SCALE0,
+    .vciRange = RCC_PLL1VCIRANGE_2,
+};
 ```
 
 ### Bug 3.2: Missing HSI48 Internal Oscillator & PLL3 USB Solution
