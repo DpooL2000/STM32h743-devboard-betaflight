@@ -79,7 +79,7 @@ Bringing Betaflight up on standard industrial development boards reveals discrep
 Standard Betaflight STM32H7 codebases are optimized for 8MHz or 24MHz external crystals. The DevEBox hardware utilizes a 25MHz HSE. Applying default configuration multipliers caused the internal voltage-controlled oscillator (VCO) to hit 3000MHz, which drastically exceeds the 960MHz hardware limit. This caused the phase-locked loop engine to fail, triggering an infinite safety reset loop inside `HandleStuckSysTick()`.
 
 **The Structural Fix:**
-The internal clock structures (`pll1ConfigRevY` and `pll1ConfigRevV`) inside `src/platform/STM32/startup/system_stm32h7xx.c` must be rewritten to scale the 25MHz crystal safely:
+The internal clock structures (`pll1ConfigRevY` and `pll1ConfigRevV`, look for the exact version on the chip of your board) inside `src/platform/STM32/startup/system_stm32h7xx.c` must be rewritten to scale the 25MHz crystal safely:
 
 ```c
 // Adjusted clock parameters for a stable 480MHz SYSCLK
