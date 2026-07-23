@@ -161,23 +161,23 @@ You must manually patch the following core Betaflight files to implement the bar
 * Locate the primary gyro initialization sequence. 
 * Add a fallback condition to directly call `bmi160Detect` mapped to SPI1 if the hardware device list returns empty during the initial boot scan.
 
-### 3. Compilation & Flashing
+# 3. Compilation & Flashing
 
-# Step 1: Clone Betaflight with all submodules (prevents empty config/configs directories)
+### Step 1: Clone Betaflight with all submodules (prevents empty config/configs directories)
 ```
 git clone --recurse-submodules [https://github.com/betaflight/betaflight.git](https://github.com/betaflight/betaflight.git)
 cd betaflight
 ```
 
-# (Optional) If you already cloned Betaflight without submodules, run this to fetch them:
+### (Optional) If you already cloned Betaflight without submodules, run this to fetch them:
 ```
 git submodule update --init --recursive
 ```
 
-# Step 2: Copy/overlay your custom DEVBOARD target files into the local Betaflight tree
-# (Manually paste your DEVBOARD config.h into src/config/configs/DEVBOARD/ and patch the target core files)
+### Step 2: Copy/overlay your custom DEVBOARD target files into the local Betaflight tree
+(Manually paste your DEVBOARD config.h into src/config/configs/DEVBOARD/ and patch the target core files)
 
-# Step 3: Clean and compile the unified DEVBOARD target
+### Step 3: Clean and compile the unified DEVBOARD target
 ```
 make clean
 make DEVBOARD -j$(nproc)
