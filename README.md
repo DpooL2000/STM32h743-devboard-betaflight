@@ -174,8 +174,9 @@ cd betaflight
 git submodule update --init --recursive
 ```
 
-### Step 2: Copy/overlay your custom DEVBOARD target files into the local Betaflight tree
-(Manually paste your DEVBOARD config.h into src/config/configs/DEVBOARD/ and patch the target core files)
+### Step 2: Copy your custom DEVBOARD target files into the local Betaflight tree
+
+Manually paste your DEVBOARD config.h into src/config/configs/DEVBOARD/ and patch the target core files
 
 ### Step 3: Clean and compile the unified DEVBOARD target
 ```
