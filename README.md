@@ -10,6 +10,11 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 <img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="450" alt="STM32H743VIT6 Dev Board" />
 </p>
 
+<img width="960" height="1280" alt="WhatsApp Image 2026-08-15 at 20 00 42" src="https://github.com/user-attachments/assets/eee96b46-8ec5-4c9b-a750-db2413b4bb9d" />
+
+<img width="1200" height="1600" alt="WhatsApp Image 2026-08-15 at 20 00 29" src="https://github.com/user-attachments/assets/0b496fdb-b39a-4a8a-a4ae-b6e823a7d18b" />
+
+
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
 
 * **Microcontroller Core:** STM32H743VIT6 (ARM Cortex-M7 running at a 480MHz bus clock).
@@ -36,7 +41,7 @@ The target configuration files provided here are explicitly tailored and tested 
 
 ## System Layout & Renderings
 
-Yup, now you know it, **you can solder through hole Devboard to the SMD pads of this breakout board** giving you clear explansion over configured pins, Eight through hole pads have been left on the breakout board that you can align the Devboard on top of breakout board. and similarly solder the BMI160, BMP280 GY board on the breakout board make the work much easy, Though i havent route the circuit for each sensor on the breakout board itself, you can easily do it if you want, or you can just go with GY boards!!!. 
+**You can solder through hole Devboard to the SMD pads of this breakout board** giving you clear explansion over configured pins, Eight through hole pads have been left on the breakout board that you can align the Devboard on top of breakout board. and similarly solder the BMI160, BMP280 GY board on the breakout board make the work much easy, Though i havent route the circuit for each sensor on the breakout board itself, you can easily do it if you want, or you can just go with GY boards!!!. 
 
 <p align="center">
 <img src="Hardware/renderings/Screenshot%202026-07-17%20213820.jpg" width="650" alt="Carrier Board Layout" />
