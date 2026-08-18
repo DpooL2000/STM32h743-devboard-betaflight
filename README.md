@@ -7,7 +7,7 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 ## Hardware Architecture Manifest
 
 <p align="center">
-<img width="1000" height="500" alt="Screenshot 2026-08-18 213010" src="https://github.com/user-attachments/assets/34f793d5-38c7-4680-bd74-88672f7893c2" />
+<img width="800" height="400" alt="Screenshot 2026-08-18 213010" src="https://github.com/user-attachments/assets/34f793d5-38c7-4680-bd74-88672f7893c2" />
 </p>
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
