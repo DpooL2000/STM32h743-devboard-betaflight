@@ -10,7 +10,7 @@ Unlike commercial flight controllers that limit you to pre-configured layouts, u
 <img src="https://stm32-base.org/assets/img/boards/STM32H743VIT6_STM32H7XX_M-1.jpg" width="450" alt="STM32H743VIT6 Dev Board" />
 </p>
 <p align="center">
-<img width="1159" height="575" alt="Screenshot 2026-08-18 213010" src="https://github.com/user-attachments/assets/34f793d5-38c7-4680-bd74-88672f7893c2" />
+<img width="1159" height="450" alt="Screenshot 2026-08-18 213010" src="https://github.com/user-attachments/assets/34f793d5-38c7-4680-bd74-88672f7893c2" />
 </p>
 
 The target configuration files provided here are explicitly tailored and tested against the following component topology and hardware pin allocation mapping:
