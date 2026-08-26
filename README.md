@@ -44,7 +44,7 @@ The target configuration files provided here are explicitly tailored and tested 
 
 Detail guide on how the changes have been made is documented below, you can merge standard betaflight source code files with this. The project layout separates the custom hardware implementation from the localized Betaflight firmware tree structure as follows:
 
-```
+```text
 ├── Hardware/                      # Physical schematic and layout assets
 │   ├── KiCad_Source/              # Raw .kicad_sch and .kicad_pcb project files
 │   └── Renderings                 # Board images, schematics, and design references
@@ -58,9 +58,7 @@ Detail guide on how the changes have been made is documented below, you can merg
 │   │   ├── main/
 │   │   │   ├── drivers/
 │   │   │   │   └── accgyro/
-│   │   │   │       └── accgyro_spi_bmi160.c
-│   │   │   └── sensors/
-│   │   │       └── gyro_init.c
+│   │   │   │       └── pios_bmi160.c
 │   │   └── platform/
 │   │       └── STM32/
 │   │           └── startup/
@@ -71,15 +69,15 @@ Detail guide on how the changes have been made is documented below, you can merg
 
 # 1. Bare-Metal Hardware Troubleshooting
 
-Bringing Betaflight up on standard industrial development boards reveals discrepancies between consumer flight controllers and raw silicon layouts. Below is the technical documentation of the three critical bare-metal failures encountered during hardware debugging, along with their permanent firmware solutions.
+Bringing Betaflight up on standard industrial development boards reveals discrepancies between consumer flight controllers and raw silicon layouts. Below is the technical documentation of the critical bare-metal failures encountered during hardware debugging, along with their permanent firmware solutions.
 
-### Bug 3.1: 25MHz HSE Crystal & PLL1 Clock Configuration Failures
+### Bug 1.1: 25MHz HSE Crystal & PLL1 Clock Configuration Failures
 
 **The Bug:**
 Standard Betaflight STM32H7 codebases are optimized for 8MHz or 24MHz external crystals. The DevEBox hardware utilizes a 25MHz HSE. Applying default configuration multipliers caused the internal voltage-controlled oscillator (VCO) to hit 3000MHz, which drastically exceeds the 960MHz hardware limit. This caused the phase-locked loop engine to fail, triggering an infinite safety reset loop inside `HandleStuckSysTick()`.
 
 **The Structural Fix:**
-The internal clock structures (`pll1ConfigRevY` and `pll1ConfigRevV`, look for the exact version on the chip of your board) inside `src/platform/STM32/startup/system_stm32h7xx.c` must be rewritten to scale the 25MHz crystal safely:
+The internal clock structures (`pll1ConfigRevY` and `pll1ConfigRevV`) inside `src/platform/STM32/startup/system_stm32h7xx.c` must be rewritten to scale the 25MHz crystal safely:
 
 ```c
 // Adjusted clock parameters for a stable 480MHz SYSCLK
@@ -95,7 +93,7 @@ pllConfig_t pll1ConfigRevV = {
 };
 ```
 
-### Bug 3.2: Missing HSI48 Internal Oscillator & PLL3 USB Solution
+### Bug 1.2: Missing HSI48 Internal Oscillator & PLL3 USB Solution
 
 **The Bug:**
 To establish a stable USB Virtual COM Port (VCP), the STM32 USB peripheral requires a 48MHz clock stream. Betaflight natively attempts to activate the internal HSI48 oscillator. However, hardware debugging proved the DevEBox completely ignores `RCC_CR_HSI48ON` register writes, leaving the USB peripheral without a clock signal and failing to enumerate.
@@ -117,24 +115,59 @@ PLL3N = 48, // 5MHz * 48 = 240MHz VCO3
 PLL3Q = 5   // 240MHz VCO3 / 5 = 48MHz USB output clock
 ```
 
-### Bug 3.3: Default BMI160 I2C Interface Boot Lockout
+### Bug 1.3: Dual BMI160 Cold-Boot Lockout & DMA Collision
 
 **The Bug:**
-The BMI160 IMU boots into I2C communication mode by default. Because stock Betaflight sensor drivers expect the device to natively listen on the SPI bus, the initial `WHO_AM_I` registry read over SPI is ignored by the sensor. The firmware assumes the gyro is dead and disables the PID loop.
+When booting two BMI160 gyroscopes simultaneously via SPI1 and SPI2, the secondary gyro regularly fails to lock DMA. 
+1. **DMA Hijacking:** `DSHOT_BITBANG_1` was statically allocated to `DMA1 Stream 0`, forcing the H7 DMAMUX auto-allocator to starve `SPI1_TX` of a continuous stream, resulting in CPU-polling mode (missing the `dma` flag).
+2. **State Variable Collision:** The driver code (`pios_bmi160.c`) utilized global state variables (`BMI160InitDone`). When Gyro 1 initialized, it set the variable to true, which caused Gyro 2 to completely bypass its configuration logic on cold boots.
 
 **The Structural Fix:**
-Force the sensor onto the high-speed SPI interface by executing a manual Chip Select (CS) edge transition sequence before attempting any communication.
-
-Patch the initialization routine inside `src/main/drivers/accgyro/accgyro_spi_bmi160.c` within the `bmi160Detect()` function:
+First, bypass the DMAMUX auto-allocator by hardcoding explicit DMA offsets in your local `config.h`:
 
 ```c
-// Force BMI160 interface reconfiguration from I2C mode to native SPI
-IOWrite(csPin, true);
-delay(10); 
-IOWrite(csPin, false); // Falling edge tells the sensor to look for SPI frames
-delay(10); 
-IOWrite(csPin, true);  // Interface locked into SPI mode
+// Force dual-gyro initialization on boot
+#define DEFAULT_GYRO_TO_USE          GYRO_CONFIG_USE_GYRO_BOTH
+
+// Explicit SPI DMA Stream Offsets (Bypasses DMAMUX Auto-Allocation Collisions)
+#define SPI1_TX_DMA_OPT              5  // Maps to DMA1 Stream 4
+#define SPI1_RX_DMA_OPT              2  // Maps to DMA1 Stream 1
+#define SPI2_TX_DMA_OPT              3  // Maps to DMA1 Stream 2
+#define SPI2_RX_DMA_OPT              4  // Maps to DMA1 Stream 3
 ```
+
+Second, eliminate the shared global states within the driver. Inside `src/main/drivers/accgyro/pios_bmi160.c`, delete the global boolean variables (`BMI160InitDone` and `BMI160Detected`) and replace the initialization functions with this independent configuration logic:
+
+```c
+uint8_t bmi160Detect(const extDevice_t *dev)
+{
+    // Toggle CS to activate SPI
+    spiWrite(dev, 0xFF);
+    delay(100); // Give SPI some time to start up
+
+    // Check the chip ID
+    if (spiReadRegMsk(dev, BMI160_REG_CHIPID) != 0xd1) {
+        return MPU_NONE;
+    }
+
+    return BMI_160_SPI;
+}
+
+static void BMI160_Init(const extDevice_t *dev)
+{
+    /* Configure the BMI160 Sensor */
+    if (BMI160_Config(dev) != 0) {
+        return;
+    }
+
+    bool do_foc = false;
+    /* Perform fast offset compensation if requested */
+    if (do_foc) {
+        BMI160_do_foc(dev);
+    }
+}
+```
+
 ---
 
 # 2. Firmware Source Tree Modification & Compilation Guide
@@ -146,49 +179,45 @@ Create a new directory named `DEVBOARD` inside `src/main/config/configs/`.
 Place your custom `config.h` files into this new folder.
 
 ### 2. Core Source Modifications
-You must manually patch the following core Betaflight files to implement the bare-metal hardware fixes detailed in Section 2:
+You must manually patch the following core Betaflight files to implement the bare-metal hardware fixes detailed in Section 1:
 
 **File: `src/platform/STM32/startup/system_stm32h7xx.c`**
 * Locate the `pll1ConfigRevY` and `pll1ConfigRevV` structures. Update the multipliers for the 25MHz HSE: set `.m = 25`, `.n = 400`, and `.p = 2`.
 * Locate the USB clock configuration block. Comment out the `HSI48` initialization and insert the PLL3 dividers: `PLL3M = 5`, `PLL3N = 48`, and `PLL3Q = 5`.
 * Locate the `SystemInit()` function and comment out the `memProtConfigure()` call to prevent early boot memory protection faults on this specific developer silicon.
 
-**File: `src/main/drivers/accgyro/accgyro_spi_bmi160.c`**
-* Locate the `bmi160Detect()` function.
-* Inject the manual Chip Select (CS) toggle sequence (`IOWrite(csPin, true)`, delay, `false`, delay, `true`) immediately before the first `WHO_AM_I` registry read to force the sensor out of I2C mode and into SPI mode.
-
-**File: `src/main/sensors/gyro_init.c`**
-* Locate the primary gyro initialization sequence. 
-* Add a fallback condition to directly call `bmi160Detect` mapped to SPI1 if the hardware device list returns empty during the initial boot scan.
+**File: `src/main/drivers/accgyro/pios_bmi160.c`**
+* Locate the `bmi160Detect()` and `BMI160_Init()` functions.
+* Delete the `BMI160InitDone` and `BMI160Detected` global variables and paste the updated initialization block provided in Section 1.3 to ensure both gyros initialize independently and acquire DMA locks.
 
 # 3. Compilation & Flashing
 
 ### Step 1: Clone Betaflight with all submodules (prevents empty config/configs directories)
-```
+```bash
 git clone --recurse-submodules [https://github.com/betaflight/betaflight.git](https://github.com/betaflight/betaflight.git)
 cd betaflight
 ```
 
 ### (Optional) If you already cloned Betaflight without submodules, run this to fetch them:
-```
+```bash
 git submodule update --init --recursive
 ```
 
 ### Step 2: Copy your custom DEVBOARD target files into the local Betaflight tree
 
-Manually paste your DEVBOARD config.h into src/config/configs/DEVBOARD/ and patch the target core files
+Manually paste your DEVBOARD config.h into `src/config/configs/DEVBOARD/` and patch the target core files.
 
 ### Step 3: Clean and compile the unified DEVBOARD target
-```
+```bash
 make clean
 make DEVBOARD -j$(nproc)
 ```
 
-Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode. For DFU mode you need to connecte BT0 to 3.3V ( you can find this pins near SWT pins).
+Once compilation is complete, flash the resulting `.hex` file to your STM32H743 via STM32CubeProgrammer or the Betaflight Configurator while the board is in DFU mode. For DFU mode you need to connect `BT0` to `3.3V` (you can find these pins near the SWT pins).
 
 ---
 
-# 3. Power Distribution & Critical Sensor Calibration
+# 4. Power Distribution & Critical Sensor Calibration
 
 ### 1. Power Supply Topology
 This target configuration assumes the system is powered by an external step-down switching regulator delivering a stable 5V rail to the developer board. The onboard AMS1117-3.3 LDO regulator drops this input to 3.3V for the STM32H7 core and sensor buses, providing robust immunity against heavy Li-ion voltage sag down to a structural threshold of 4.4V.
@@ -211,5 +240,5 @@ save
 
 1. Connect your fully assembled battery pack to the drone and measure the raw voltage at the main XT60 bus using a calibrated bench digital multimeter.
 2. Boot into the Betaflight Configurator GUI and check the reported voltage reading on the main Setup dashboard.
-3. Micro-adjust the vbat_scale numerical values up or down in the CLI tab (or the Power & Battery tab) until the software telemetry read-out matches your multimeter's hardware voltage precisely.
-4. Perform a similar verification for the current sensor by measuring the draw of a known load and adjusting the current_meter_scale accordingly.
+3. Micro-adjust the `vbat_scale` numerical values up or down in the CLI tab (or the Power & Battery tab) until the software telemetry read-out matches your multimeter's hardware voltage precisely.
+4. Perform a similar verification for the current sensor by measuring the draw of a known load and adjusting the `current_meter_scale` accordingly.
