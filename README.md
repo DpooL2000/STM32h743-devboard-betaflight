@@ -233,6 +233,7 @@ As a structural baseline, this target defaults to our specific hardware mapping 
 ```text
 set vbat_scale = 108
 set current_meter_scale = 85
+set current_meter_offset = -3500
 save
 ```
 
