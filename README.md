@@ -232,7 +232,7 @@ As a structural baseline, this target defaults to our specific hardware mapping 
 
 ```text
 set vbat_scale = 108
-set current_meter_scale = 120
+set current_meter_scale = 85
 save
 ```
 
