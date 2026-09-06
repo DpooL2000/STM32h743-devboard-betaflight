@@ -2,7 +2,7 @@
 
 This document outlines the complete hardware architecture, propulsion system, and Betaflight tuning parameters for the 10-inch Mark 4 endurance cruiser. The PID and filter configurations are specifically optimized for smooth, long-range flight dynamics and heavy payload stability, utilizing a custom STM32H743 flight controller.
 
-<img width="1280" height="720" alt="WhatsApp Image 2026-09-06 at 21 29 51" src="https://github.com/user-attachments/assets/3fe28cc6-9788-4b4e-af80-581b6ec8c472" />
+<img width="640" height="360" alt="WhatsApp Image 2026-09-06 at 21 29 51" src="https://github.com/user-attachments/assets/3fe28cc6-9788-4b4e-af80-581b6ec8c472" />
 
 ## 1. Hardware & Propulsion Architecture
 * **Frame:** Mark 4 (10-inch configuration)
